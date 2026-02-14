@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Post | Warm Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --espresso: #3E2723;
+      --latte: #F5E6CA;
+      --crema: #D7CCC8;
+      --bean: #5D4037;
+      --accent: #FF7043;
+      --white: #FFFFFF;
+      --chalkboard-bg: #222;
+      --chalkboard-text: #eee;
+      --chalkboard-muted: #999;
+      --chalkboard-border: #444;
+      --font-head: 'Pacifico', cursive;
+      --font-serif: 'Lora', serif;
+      --font-sans: 'Nunito', sans-serif;
+      --container-max: 1100px;
+      --container-narrow: 800px;
+      --container-padding: 0 20px;
+      --section-padding: 100px 0;
+      --section-header-mb: 60px;
+      --grid-gap-lg: 40px;
+      --grid-gap-md: 30px;
+      --grid-gap-sm: 20px;
+      --card-padding: 30px;
+      --footer-padding: 80px 0 40px;
+      --nav-padding: 30px;
+      --radius: 12px;
+      --radius-pill: 30px;
+      --radius-chalkboard: 10px;
+      --shadow: 5px 5px 20px color-mix(in srgb, var(--espresso) 14%, transparent);
+      --shadow-hover: 0 10px 30px color-mix(in srgb, var(--espresso) 24%, transparent);
+      --shadow-chalkboard: 0 10px 30px color-mix(in srgb, var(--bean) 32%, transparent);
+      --hero-title-size: 5rem;
+      --hero-subtitle-size: 1.5rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--latte);
+      color: var(--bean);
+      transition: 0.3s;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; transition: 0.3s; }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+    }
+
+    .container.narrow {
+      max-width: var(--container-narrow);
+    }
+
+    .site-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: var(--nav-padding);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .site-nav .logo {
+      font-family: var(--font-head);
+      font-size: 32px;
+      color: var(--white);
+      text-shadow: 0 2px 5px color-mix(in srgb, var(--espresso) 35%, transparent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 3px color-mix(in srgb, var(--espresso) 45%, transparent);
+    }
+
+    .hero {
+      min-height: 60vh;
+      position: relative;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--espresso) 40%, transparent), color-mix(in srgb, var(--espresso) 80%, transparent)),
+        url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=2200&auto=format&fit=crop') center/cover no-repeat;
+      display: flex;
+      align-items: flex-end;
+      color: var(--latte);
+      padding: var(--container-padding);
+      padding-bottom: 80px;
+    }
+
+    .hero-meta {
+      width: 100%;
+      max-width: var(--container-narrow);
+      margin: 0 auto;
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    .hero-meta .kicker {
+      font-family: var(--font-sans);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      color: var(--latte);
+      opacity: 0.9;
+    }
+
+    .hero-meta h1 {
+      margin: 10px 0;
+      font-family: var(--font-serif);
+      font-size: 2.9rem;
+      color: var(--latte);
+      line-height: 1.2;
+    }
+
+    .meta-line {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      display: inline-block;
+      border-top: 1px dashed var(--latte);
+      padding-top: 12px;
+      font-family: var(--font-sans);
+    }
+
+    .section {
+      padding: var(--section-padding);
+    }
+
+    .post-body {
+      font-family: var(--font-serif);
+      line-height: 1.8;
+    }
+
+    .post-body p {
+      margin: 0 0 20px;
+      font-size: 1rem;
+      color: var(--bean);
+    }
+
+    .post-subtitle {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--espresso);
+      margin: 0 0 16px;
+      line-height: 1.2;
+    }
+
+    .post-title {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--espresso);
+      margin: 0 0 10px;
+      line-height: 1.2;
+    }
+
+    .post-author {
+      font-family: var(--font-sans);
+      color: var(--bean);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap-lg);
+      margin: 48px 0;
+    }
+
+    .polaroid {
+      background: var(--white);
+      padding: 15px 15px 40px;
+      box-shadow: var(--shadow);
+      transform: rotate(-2deg);
+      transition: transform 0.3s;
+      border-radius: 2px;
+    }
+
+    .polaroid img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      filter: sepia(0.3);
+      display: block;
+    }
+
+    .polaroid p {
+      margin: 12px 0 0;
+      text-align: center;
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      color: var(--bean);
+      border-top: 1px dashed var(--crema);
+      padding-top: 10px;
+    }
+
+    .polaroid:hover {
+      transform: scale(1.05) rotate(0deg);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+      border-left: 4px solid var(--espresso);
+      margin-top: 30px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+      padding-bottom: 8px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -52px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--espresso);
+      border: 4px solid var(--latte);
+    }
+
+    .timeline-item h4 {
+      margin: 0 0 8px;
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--espresso);
+    }
+
+    .timeline-item p {
+      margin: 0;
+      font-family: var(--font-serif);
+      line-height: 1.8;
+      color: var(--bean);
+    }
+
+    .chalkboard {
+      margin-top: 50px;
+      background: var(--chalkboard-bg);
+      border: 15px solid var(--bean);
+      border-radius: var(--radius-chalkboard);
+      padding: 40px;
+      color: var(--chalkboard-text);
+      box-shadow: var(--shadow-chalkboard);
+    }
+
+    .chalkboard h2 {
+      margin: 0 0 16px;
+      font-family: var(--font-head);
+      font-size: 3rem;
+      text-align: center;
+      text-shadow: 2px 2px 0 color-mix(in srgb, var(--bean) 45%, transparent);
+      color: var(--chalkboard-text);
+    }
+
+    .chalkboard p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1.05rem;
+    }
+
+    .chalkboard form {
+      margin-top: 16px;
+      border-top: 1px dashed var(--chalkboard-muted);
+      padding-top: 16px;
+    }
+
+    .chalkboard input {
+      width: 100%;
+      background: color-mix(in srgb, var(--chalkboard-bg) 74%, transparent);
+      border: 1px solid var(--chalkboard-border);
+      border-radius: var(--radius);
+      padding: 12px;
+      font-family: var(--font-sans);
+      color: var(--chalkboard-text);
+      font-size: 1rem;
+    }
+
+    .chalkboard button {
+      margin-top: 12px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--espresso);
+      color: var(--latte);
+      padding: 12px 24px;
+      text-transform: uppercase;
+      font-family: var(--font-sans);
+      letter-spacing: 1px;
+      font-weight: 700;
+      cursor: default;
+    }
+
+    .footer {
+      background: var(--espresso);
+      color: var(--latte);
+      padding: var(--footer-padding);
+    }
+
+    .footer-grid {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .footer-col p {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .footer-copy {
+      border-top: 1px dashed var(--crema);
+      text-align: center;
+      opacity: 0.6;
+      padding-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+
+    @media (max-width: 900px) {
+      .site-nav { flex-direction: column; align-items: flex-start; }
+      .hero { min-height: 65vh; }
+      .hero-meta h1 { font-size: 2.4rem; }
+      .polaroid-grid,
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="site-nav">
+      <a href="blog-post.html" class="logo">Warm Coffee</a>
+      <div class="nav-links">
+        <a href="events.html">Events</a>
+        <a href="gift-cards.html">Gift Cards</a>
+        <a href="subscription.html">Subscription</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog-post.html">Blog</a>
+      </div>
+    </nav>
+    <div class="container narrow hero-meta">
+      <span class="kicker">Roastery Notes</span>
+      <h1>Slow Fire, Deep Flavor: A Ten-Hour Journey from Coffee to Cup</h1>
+      <div class="meta-line">By Warm Coffee Editorial · 2026-02-01</div>
+    </div>
+  </header>
+
+  <main class="section">
+    <article class="container narrow">
+      <div class="post-body">
+        <p>Every coffee bean travels a long route from the tropical highlands to your cup. When we select beans, we first look at color, fragrance, and cracks, then judge the maturity of the green bean. A stable roasting window is often more important than chasing novelty, because the roast rhythm must be respected.</p>
+        <p>From the first preheat phase, the roasting curve determines when sugars release at their best stage. On a first try, you may notice herbal notes in the first sip, caramel notes in the second, and woody depth in the final aftertaste. It is not magic; it is disciplined tracking of variables.</p>
+      </div>
+
+      <h2 class="post-subtitle">Bean Notes: Flavor Is a Log You Can Replay</h2>
+      <div class="post-body">
+        <p>A successful extraction is achieved through repeatability, not guesswork. Filter paper, grind size, pour rhythm, and brew time form a four-axis system where any drift creates flavor noise. For us, the timeline is not storytelling—it is a way to return each cup to the same balanced flavor range.</p>
+      </div>
+
+      <div class="polaroid-grid">
+        <figure class="polaroid">
+          <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900&auto=format&fit=crop" alt="roasted coffee beans" />
+          <p>First Roast</p>
+        </figure>
+        <figure class="polaroid">
+          <img src="https://images.unsplash.com/photo-1532635248-43f5d6f5d5d8?w=900&auto=format&fit=crop" alt="coffee grinder" />
+          <p>Grinding Notes</p>
+        </figure>
+        <figure class="polaroid">
+          <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900&auto=format&fit=crop" alt="cup pour" />
+          <p>Pour & Bloom</p>
+        </figure>
+      </div>
+
+      <div class="post-body">
+        <p>The texture you see near the rim comes from oils and caramelized sugars released at different phases. We often say “smell before you sip” because the first aroma tells you whether the initial sweetness has been formed. The final aftertaste is the moment that tells you whether the entire process succeeded.</p>
+        <p>Compare different bean processes and roast curves and you’ll notice flavor rarely changes in a line. It behaves more like a wave: after brightness comes stillness, after richness comes lightness. For this reason, coffee storytelling is an observation skill that can be trained.</p>
+      </div>
+
+      <h2 class="post-subtitle">Coffee Timeline</h2>
+      <div class="timeline">
+        <section class="timeline-item">
+          <h4>2006 · First Roasting Log</h4>
+          <p>We started using handwritten batch cards to trace every roast’s temperature, timing, and flavor deviations.</p>
+        </section>
+        <section class="timeline-item">
+          <h4>2014 · First Public Extraction Demo</h4>
+          <p>We began hosting weekly public extraction sessions so customers can learn the technical path behind each cup.</p>
+        </section>
+        <section class="timeline-item">
+          <h4>2024 · Launched Slow Brew Membership</h4>
+          <p>We moved from one-time purchases to a long-form experience model, with all plans tied to in-store events and flavor reviews.</p>
+        </section>
+      </div>
+
+      <section class="chalkboard" aria-label="Newsletter">
+        <h2>Newsletter</h2>
+        <p>Leave your email and receive weekly roasting updates and event previews, so you never miss a fresh flavor log.</p>
+        <form>
+          <label for="newsletter" class="visually-hidden"></label>
+          <input id="newsletter" type="email" placeholder="name@example.com" />
+          <button type="button">Subscribe</button>
+        </form>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Store Hours</h3>
+        <p>Mon - Fri 07:30 - 22:00</p>
+        <p>Weekend 08:00 - 23:00</p>
+      </div>
+      <div class="footer-col">
+        <h3>Subscription Perks</h3>
+        <p>Blog subscribers can download the first-time pour checklist first</p>
+        <p>See the events page for more behind-the-scenes stories</p>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p>hello@warmcoffee.com</p>
+        <p>+86 021-7777-7777</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Warm Coffee. All rights reserved.</div>
+  </footer>
+</body>
+</html>

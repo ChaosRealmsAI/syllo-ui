@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscription | Warm Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --espresso: #3E2723;
+      --latte: #F5E6CA;
+      --crema: #D7CCC8;
+      --bean: #5D4037;
+      --accent: #FF7043;
+      --white: #FFFFFF;
+      --chalkboard-bg: #222;
+      --chalkboard-text: #eee;
+      --chalkboard-muted: #999;
+      --chalkboard-border: #444;
+      --font-head: 'Pacifico', cursive;
+      --font-serif: 'Lora', serif;
+      --font-sans: 'Nunito', sans-serif;
+      --container-max: 1100px;
+      --container-narrow: 800px;
+      --container-padding: 0 20px;
+      --section-padding: 100px 0;
+      --section-header-mb: 60px;
+      --grid-gap-lg: 40px;
+      --grid-gap-md: 30px;
+      --grid-gap-sm: 20px;
+      --card-padding: 30px;
+      --footer-padding: 80px 0 40px;
+      --nav-padding: 30px;
+      --radius: 12px;
+      --radius-pill: 30px;
+      --radius-chalkboard: 10px;
+      --shadow: 5px 5px 20px color-mix(in srgb, var(--espresso) 14%, transparent);
+      --shadow-hover: 0 10px 30px color-mix(in srgb, var(--espresso) 24%, transparent);
+      --shadow-chalkboard: 0 10px 30px color-mix(in srgb, var(--bean) 32%, transparent);
+      --hero-title-size: 5rem;
+      --hero-subtitle-size: 1.5rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--latte);
+      color: var(--bean);
+      transition: 0.3s;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; transition: 0.3s; }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+    }
+
+    .site-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: var(--nav-padding);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .site-nav .logo {
+      font-family: var(--font-head);
+      font-size: 32px;
+      color: var(--white);
+      text-shadow: 0 2px 5px color-mix(in srgb, var(--espresso) 35%, transparent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 3px color-mix(in srgb, var(--espresso) 45%, transparent);
+    }
+
+    .hero {
+      min-height: 60vh;
+      position: relative;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--espresso) 40%, transparent), color-mix(in srgb, var(--espresso) 80%, transparent)),
+        url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=2200&auto=format&fit=crop') center/cover no-repeat;
+      display: flex;
+      align-items: flex-end;
+      color: var(--latte);
+      padding: var(--container-padding);
+      padding-bottom: 80px;
+    }
+
+    .hero-meta {
+      width: 100%;
+      max-width: var(--container-narrow);
+      margin: 0 auto;
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    .hero-meta .kicker {
+      font-family: var(--font-sans);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      color: var(--latte);
+      opacity: 0.9;
+    }
+
+    .hero-meta h1 {
+      margin: 10px 0;
+      font-family: var(--font-serif);
+      font-size: 2.9rem;
+      color: var(--latte);
+      line-height: 1.2;
+    }
+
+    .meta-line {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      display: inline-block;
+      border-top: 1px dashed var(--latte);
+      padding-top: 12px;
+      font-family: var(--font-sans);
+    }
+
+    .section {
+      padding: var(--section-padding);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--section-header-mb);
+    }
+
+    .section-header h2 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      color: var(--espresso);
+      font-weight: 700;
+    }
+
+    .section-header p {
+      margin: 0 auto;
+      max-width: 600px;
+      color: var(--bean);
+      font-size: 1.1rem;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap-lg);
+    }
+
+    .plan-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: var(--card-padding);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, border-color 0.3s;
+      border: 2px solid transparent;
+      text-align: center;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .plan-card.premium {
+      transform: scale(1.04);
+      border-color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .plan-card.premium:hover {
+      transform: scale(1.08) translateY(-10px);
+    }
+
+    .plan-name {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--espresso);
+    }
+
+    .plan-price {
+      margin: 12px 0;
+      color: var(--accent);
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-family: var(--font-sans);
+    }
+
+    .plan-unit {
+      margin-bottom: 18px;
+      color: var(--bean);
+      font-size: 0.95rem;
+    }
+
+    .plan-list {
+      text-align: left;
+      margin: 0 0 24px;
+      padding: 0;
+      list-style: none;
+      border-top: 1px dashed var(--crema);
+      padding-top: 20px;
+    }
+
+    .plan-list li {
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .plan-list li::before {
+      content: '•';
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      background: var(--espresso);
+      color: var(--latte);
+      padding: 15px 40px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      border: 2px solid transparent;
+      box-shadow: 0 5px 15px color-mix(in srgb, var(--espresso) 35%, transparent);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+    }
+
+    .chalkboard {
+      margin-top: var(--section-padding);
+      background: var(--chalkboard-bg);
+      border: 15px solid var(--bean);
+      border-radius: var(--radius-chalkboard);
+      padding: 40px;
+      color: var(--chalkboard-text);
+      box-shadow: var(--shadow-chalkboard);
+      font-family: var(--font-sans);
+    }
+
+    .chalkboard h3 {
+      margin: 0 0 16px;
+      text-align: center;
+      font-family: var(--font-head);
+      font-size: 3rem;
+      color: var(--chalkboard-text);
+      text-shadow: 2px 2px 0 color-mix(in srgb, var(--bean) 45%, transparent);
+    }
+
+    .faq-item {
+      margin-bottom: 18px;
+      border-top: 1px dashed var(--chalkboard-muted);
+      padding-top: 16px;
+    }
+
+    .faq-item h4 {
+      margin: 0;
+      font-family: var(--font-serif);
+      color: var(--chalkboard-text);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .faq-item p {
+      margin: 8px 0 0;
+      color: var(--chalkboard-muted);
+      font-size: 0.95rem;
+    }
+
+    .footer {
+      background: var(--espresso);
+      color: var(--latte);
+      padding: var(--footer-padding);
+    }
+
+    .footer-grid {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .footer-col p {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .footer-copy {
+      border-top: 1px dashed var(--crema);
+      text-align: center;
+      opacity: 0.6;
+      padding-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+
+    @media (max-width: 900px) {
+      .site-nav { flex-direction: column; align-items: flex-start; }
+      .hero h1 { font-size: 3.5rem; }
+      .plans,
+      .footer-grid { grid-template-columns: 1fr; }
+      .plan-card.premium { transform: scale(1); }
+      .chalkboard { padding: 30px 20px; }
+      .section { padding: 100px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="site-nav">
+      <a href="subscription.html" class="logo">Warm Coffee</a>
+      <div class="nav-links">
+        <a href="events.html">Events</a>
+        <a href="gift-cards.html">Gift Cards</a>
+        <a href="subscription.html">Subscription</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog-post.html">Blog</a>
+      </div>
+    </nav>
+    <div>
+      <div class="hero-meta container">
+        <span class="kicker">Warm Coffee Club</span>
+        <h1>Join the Club</h1>
+        <p>Subscribe for curated selections, roasting stories, and member-only pricing so each cup is brewed with intention.</p>
+        <div class="meta-line">By Warm Coffee Membership · Every month, always something new.</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Subscription Plans</h2>
+          <p>Three tiers are available and can be upgraded anytime. All plans can be canceled anytime with no long-term contracts.</p>
+        </div>
+        <div class="plans">
+          <div class="plan-card">
+            <h3 class="plan-name">Basic</h3>
+            <div class="plan-price">$12</div>
+            <p class="plan-unit">/ mo</p>
+            <ul class="plan-list">
+              <li>Two in-store discount vouchers each month</li>
+              <li>Monthly drink recipe drops</li>
+              <li>Priority check-in on member days</li>
+            </ul>
+            <a class="btn-pill" href="#">Choose Plan</a>
+          </div>
+          <div class="plan-card premium">
+            <h3 class="plan-name">Premium</h3>
+            <div class="plan-price">$24</div>
+            <p class="plan-unit">/ mo</p>
+            <ul class="plan-list">
+              <li>Six specialty brew-bag selections each month</li>
+              <li>One bar counter class voucher each month</li>
+              <li>Priority event booking and birthday gift</li>
+            </ul>
+            <a class="btn-pill" href="#">Choose Plan</a>
+          </div>
+          <div class="plan-card">
+            <h3 class="plan-name">Family</h3>
+            <div class="plan-price">$36</div>
+            <p class="plan-unit">/ mo</p>
+            <ul class="plan-list">
+              <li>Quota for four people plus shared card</li>
+              <li>Limited seasonal gift box delivery</li>
+              <li>One team reservation bonus each month</li>
+            </ul>
+            <a class="btn-pill" href="#">Choose Plan</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="chalkboard" aria-label="FAQ">
+          <h3>FAQ · Common Questions</h3>
+          <div class="faq-item">
+            <h4>Can I pause my membership anytime?</h4>
+            <p>Yes. You can pause for up to 30 days by setting it at least three days before any billing cycle. One pause per cycle.</p>
+          </div>
+          <div class="faq-item">
+            <h4>What delivery areas are supported?</h4>
+            <p>All domestic cities support store pickup. Some cities also support courier delivery—see the order page for details.</p>
+          </div>
+          <div class="faq-item">
+            <h4>How do I cancel auto-renewal?</h4>
+            <p>Go to Membership Settings in your profile and toggle off auto-renewal. Existing benefits remain available until your current cycle ends.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Store Hours</h3>
+        <p>Mon - Fri 07:45 - 22:00</p>
+        <p>Weekend 08:30 - 23:00</p>
+      </div>
+      <div class="footer-col">
+        <h3>Subscription Perks</h3>
+        <p>Upgrade to Premium for dessert add-ons on Member Days</p>
+        <p>Family members get one private event every quarter</p>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p>contact@warmcoffee.com</p>
+        <p>+86 021-8888-0000</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Warm Coffee. All rights reserved.</div>
+  </footer>
+</body>
+</html>

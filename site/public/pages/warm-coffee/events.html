@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events | Warm Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --espresso: #3E2723;
+      --latte: #F5E6CA;
+      --crema: #D7CCC8;
+      --bean: #5D4037;
+      --accent: #FF7043;
+      --white: #FFFFFF;
+      --chalkboard-bg: #222;
+      --chalkboard-text: #eee;
+      --chalkboard-muted: #999;
+      --chalkboard-border: #444;
+      --font-head: 'Pacifico', cursive;
+      --font-serif: 'Lora', serif;
+      --font-sans: 'Nunito', sans-serif;
+      --container-max: 1100px;
+      --container-narrow: 800px;
+      --container-padding: 0 20px;
+      --section-padding: 100px 0;
+      --section-header-mb: 60px;
+      --grid-gap-lg: 40px;
+      --grid-gap-md: 30px;
+      --grid-gap-sm: 20px;
+      --card-padding: 30px;
+      --footer-padding: 80px 0 40px;
+      --nav-padding: 30px;
+      --radius: 12px;
+      --radius-pill: 30px;
+      --radius-chalkboard: 10px;
+      --shadow: 5px 5px 20px color-mix(in srgb, var(--espresso) 14%, transparent);
+      --shadow-hover: 0 10px 30px color-mix(in srgb, var(--espresso) 24%, transparent);
+      --shadow-chalkboard: 0 10px 30px color-mix(in srgb, var(--bean) 32%, transparent);
+      --hero-title-size: 5rem;
+      --hero-subtitle-size: 1.5rem;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--latte);
+      color: var(--bean);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: 0.3s;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+    }
+
+    .site-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: var(--nav-padding);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .site-nav .logo {
+      font-family: var(--font-head);
+      font-size: 32px;
+      color: var(--white);
+      text-shadow: 0 2px 5px color-mix(in srgb, var(--espresso) 35%, transparent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 3px color-mix(in srgb, var(--espresso) 45%, transparent);
+    }
+
+    .hero {
+      height: 60vh;
+      min-height: 420px;
+      position: relative;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--espresso) 40%, transparent), color-mix(in srgb, var(--espresso) 80%, transparent)),
+        url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=2000&auto=format&fit=crop') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 760px;
+      animation: fadeUp 1.5s ease-out;
+      padding: var(--container-padding);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: var(--font-head);
+      font-size: var(--hero-title-size);
+      text-shadow: 0 4px 10px color-mix(in srgb, var(--espresso) 45%, transparent);
+      color: var(--latte);
+    }
+
+    .hero p {
+      margin-top: 16px;
+      margin-bottom: 28px;
+      font-family: var(--font-serif);
+      font-size: var(--hero-subtitle-size);
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      background: var(--espresso);
+      color: var(--latte);
+      padding: 15px 40px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      box-shadow: 0 5px 15px color-mix(in srgb, var(--espresso) 35%, transparent);
+      border: 2px solid transparent;
+    }
+
+    .btn-pill.outline {
+      background: transparent;
+      border-color: var(--white);
+      color: var(--white);
+    }
+
+    .ticker {
+      background: var(--espresso);
+      color: var(--latte);
+      border-top: 4px solid var(--accent);
+      padding: 10px 0;
+      overflow: hidden;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+
+    .ticker-track {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: scroll 20s linear infinite;
+    }
+
+    .ticker span {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 40px;
+    }
+
+    .section {
+      padding: var(--section-padding);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--section-header-mb);
+    }
+
+    .section-header h2 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--espresso);
+    }
+
+    .section-header p {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      color: var(--bean);
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap-lg);
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card img {
+      height: 250px;
+      width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: var(--card-padding);
+      text-align: center;
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .card-date {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+
+    .card-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--espresso);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--bean);
+      font-size: 0.95rem;
+      max-width: 35ch;
+    }
+
+    .footer {
+      background: var(--espresso);
+      color: var(--latte);
+      padding: var(--footer-padding);
+    }
+
+    .footer-grid {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .footer-col p {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .footer-copy {
+      text-align: center;
+      border-top: 1px dashed var(--crema);
+      padding-top: 20px;
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .site-nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        height: 68vh;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+
+      .cards-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="site-nav">
+      <a class="logo" href="events.html">Warm Coffee</a>
+      <div class="nav-links">
+        <a href="events.html">Events</a>
+        <a href="gift-cards.html">Gift Cards</a>
+        <a href="subscription.html">Subscription</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog-post.html">Blog</a>
+      </div>
+    </nav>
+
+    <div class="hero-content container">
+      <h1>Coffee Warmth · This Week&apos;s Events</h1>
+      <p>Every week we host four events with different vibes, from slow-brew mornings to evening listening sessions, making city life ferment with coffee energy.</p>
+      <div class="hero-btns">
+        <a class="btn-pill" href="#events-grid"><i class="ph ph-calendar-blank"></i>View All Events</a>
+        <a class="btn-pill outline" href="#"><i class="ph ph-cake"></i>Reserve Now</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="ticker">
+    <div class="ticker-track" aria-label="This Week&apos;s Event Highlights">
+      <span><i class="ph ph-coffee"></i> Sat 09:30 Aroma Pour-Over Class</span>
+      <span>•</span>
+      <span><i class="ph ph-music-notes"></i> Sun 19:00 Nocturne Jazz Night</span>
+      <span>•</span>
+      <span><i class="ph ph-camera"></i> Tue 17:00 Brew Gear Experience</span>
+      <span>•</span>
+      <span><i class="ph ph-leaf"></i> Fri 14:00 Farm Stories Session</span>
+      <span>•</span>
+    </div>
+  </div>
+
+  <main>
+    <section class="section" id="events-grid">
+      <div class="container">
+        <div class="section-header">
+          <h2>This Week&apos;s Highlights</h2>
+          <p>Click any card below to view full details. Seats are limited, so book early.</p>
+        </div>
+        <div class="cards-grid">
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1000&auto=format&fit=crop" alt="Morning pour-over class" />
+            <div class="card-body">
+              <span class="card-date"><i class="ph ph-calendar-blank"></i> 6/10 Sat · 09:00</span>
+              <h3 class="card-title">Morning Pour-Over Workshop</h3>
+              <p>Bean selection, grind size, and pouring rhythm in three steps help you make your first steady hand-brewed cup.</p>
+              <a class="btn-pill" href="#">View Details</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1000&auto=format&fit=crop" alt="Slow brew class" />
+            <div class="card-body">
+              <span class="card-date"><i class="ph ph-calendar-blank"></i> 6/11 Sun · 11:00</span>
+              <h3 class="card-title">Slow Brew Afternoon Class</h3>
+              <p>Barista-led taste guidance and latte-art formulas, with low-sugar desserts for a first-time friendly session.</p>
+              <a class="btn-pill" href="#">View Details</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1000&auto=format&fit=crop" alt="Tools tasting" />
+            <div class="card-body">
+              <span class="card-date"><i class="ph ph-calendar-blank"></i> 6/12 Mon · 17:30</span>
+              <h3 class="card-title">Pour-Over Gear Tasting Night</h3>
+              <p>Open trial slots for drippers and kettles, with in-store tasting and one-on-one Q&amp;A with the barista.</p>
+              <a class="btn-pill" href="#">View Details</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1459257831348-31d7ddd2f2ff?w=1000&auto=format&fit=crop" alt="Jazz night" />
+            <div class="card-body">
+              <span class="card-date"><i class="ph ph-calendar-blank"></i> 6/13 Tue · 19:30</span>
+              <h3 class="card-title">Nocturne Jazz Session</h3>
+              <p>Live bass performance and mixology lesson in one evening, with limited bar special drinks for dates or relaxed nights.</p>
+              <a class="btn-pill" href="#">View Details</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Store Hours</h3>
+        <p>Mon - Fri 07:30 - 22:30</p>
+        <p>Weekend 08:00 - 23:30</p>
+      </div>
+      <div class="footer-col">
+        <h3>Subscription Perks</h3>
+        <p>Weekly highlights, priority seating, and exclusive event discount codes</p>
+        <p>Subscribe to secure the latest event calendar in advance</p>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p>7# Coffee Street, Chaoyang District, Beijing</p>
+        <p>hello@warmcoffee.com</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Warm Coffee. All rights reserved.</div>
+  </footer>
+</body>
+</html>

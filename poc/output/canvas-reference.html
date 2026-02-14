@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warm Coffee - Design Canvas</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            /* UI Chrome Colors (Dark/Premium) */
+            --bg-app: #09090b;
+            --bg-panel: #121214;
+            --bg-canvas: #0a0a0a;
+            --border-subtle: #27272a;
+            --border-active: #3f3f46;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent-ui: #f59e0b; /* Warm amber for UI accent */
+            
+            /* Warm Coffee Theme Tokens */
+            --wc-espresso: #3E2723;
+            --wc-bean: #5D4037;
+            --wc-latte: #F5E6CA;
+            --wc-crema: #D7CCC8;
+            --wc-accent: #FF7043;
+            --wc-chalkboard: #222222;
+            
+            /* Typography */
+            --font-ui: 'Inter', sans-serif;
+            --font-display: 'Pacifico', cursive;
+            --font-heading: 'Lora', serif;
+            --font-body: 'Nunito', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-ui);
+            background-color: var(--bg-app);
+            color: var(--text-primary);
+            user-select: none; /* Prevent text selection during pan */
+        }
+
+        /* Layout */
+        .app-container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            grid-template-rows: 48px 1fr;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            grid-column: 1 / -1;
+            background-color: var(--bg-app);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 10;
+        }
+
+        .toolbar-left, .toolbar-right, .toolbar-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--border-subtle);
+            color: var(--text-primary);
+        }
+
+        .theme-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-badge {
+            font-size: 0.7rem;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-ui);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 2px;
+        }
+
+        .zoom-val {
+            font-size: 0.8rem;
+            width: 48px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-subtle);
+            padding: 16px 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-title {
+            padding: 0 16px 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .sidebar-item {
+            padding: 6px 16px 6px 24px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .sidebar-item:hover {
+            color: var(--text-primary);
+            background-color: rgba(255,255,255,0.03);
+        }
+
+        .sidebar-item.active {
+            color: var(--text-primary);
+            background-color: rgba(255,255,255,0.05);
+            border-left-color: var(--accent-ui);
+        }
+
+        .sidebar-item i {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        /* Canvas Area */
+        .canvas-viewport {
+            background-color: var(--bg-canvas);
+            overflow: hidden; /* We handle scroll via transform */
+            position: relative;
+            cursor: grab;
+            /* Dot Grid Background */
+            background-image: radial-gradient(var(--border-subtle) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .canvas-viewport:active {
+            cursor: grabbing;
+        }
+
+        .canvas-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: 0 0;
+            /* Will be controlled by JS transform: translate(...) scale(...) */
+            width: 5000px; /* Arbitrary large size */
+            height: 5000px;
+            padding: 100px;
+        }
+
+        /* Frames (The actual content containers) */
+        .frame {
+            position: absolute;
+            background: white; /* Most frames are light by default in this theme context, or we style inner */
+            border-radius: 4px; /* Figma-like sharp/slightly rounded */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: box-shadow 0.2s;
+            overflow: hidden;
+        }
+        
+        /* Frame Labels */
+        .frame-label {
+            position: absolute;
+            top: -24px;
+            left: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .frame:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 0 1px var(--accent-ui);
+        }
+
+        /* Minimap */
+        .minimap {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 200px;
+            height: 120px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 20;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .minimap-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: var(--bg-canvas);
+        }
+
+        .minimap-viewport-indicator {
+            position: absolute;
+            border: 1px solid var(--accent-ui);
+            background: rgba(245, 158, 11, 0.1);
+            pointer-events: none;
+        }
+
+        /* ------------------------------------------------------------------
+           WARM COFFEE THEME STYLES (Inside Frames) 
+           ------------------------------------------------------------------ */
+        
+        /* Common Reset for inside frames */
+        .frame-inner {
+            width: 100%;
+            height: 100%;
+            color: var(--wc-espresso);
+            font-family: var(--font-body);
+            display: flex;
+            flex-direction: column;
+            background-color: #fff; /* Default frame bg */
+        }
+        
+        .wc-bg-dark { background-color: var(--wc-espresso); color: var(--wc-latte); }
+        .wc-bg-bean { background-color: var(--wc-bean); color: var(--wc-latte); }
+        .wc-bg-latte { background-color: var(--wc-latte); color: var(--wc-espresso); }
+        .wc-bg-chalk { background-color: var(--wc-chalkboard); color: var(--wc-latte); }
+
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 600; margin: 0 0 0.5em 0; }
+        .display-text { font-family: var(--font-display); }
+
+        /* Token Swatches */
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 32px;
+        }
+        .swatch {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .swatch-color { height: 80px; width: 100%; }
+        .swatch-info { 
+            padding: 12px; 
+            background: #fff; 
+            border: 1px solid #eee; 
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+        }
+        .swatch-name { font-weight: 700; font-size: 0.9rem; display: block; }
+        .swatch-hex { font-family: monospace; color: #888; font-size: 0.8rem; }
+
+        /* Typography Scale */
+        .type-scale { padding: 40px; display: flex; flex-direction: column; gap: 24px; }
+        .type-row { display: flex; align-items: baseline; gap: 32px; border-bottom: 1px solid #eee; padding-bottom: 16px; }
+        .type-meta { width: 120px; font-size: 0.75rem; color: #888; font-family: var(--font-ui); text-align: right; }
+        .type-preview { flex: 1; }
+
+        /* Components */
+        .component-stage {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            height: 100%;
+            background-color: #FAFAFA;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--wc-espresso); color: var(--wc-latte); }
+        .btn-outline { background: transparent; border: 2px solid var(--wc-espresso); color: var(--wc-espresso); }
+        .btn-accent { background: var(--wc-accent); color: white; }
+
+        /* Product Card */
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(62, 39, 35, 0.1);
+            width: 280px;
+        }
+        .card-img { height: 180px; background: var(--wc-bean); position: relative; }
+        .card-img::after {
+            content: '☕';
+            position: absolute;
+            font-size: 4rem;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .card-body { padding: 20px; }
+        .card-tag { 
+            background: var(--wc-latte); color: var(--wc-espresso); 
+            padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        }
+        .card-title { margin-top: 12px; font-size: 1.2rem; }
+        .card-price { font-weight: 700; color: var(--wc-accent); float: right; }
+
+        /* Chalkboard Menu */
+        .menu-board {
+            background: var(--wc-chalkboard);
+            color: var(--wc-latte);
+            padding: 32px;
+            border: 8px solid var(--wc-bean);
+            border-radius: 4px;
+            width: 100%;
+            height: 100%;
+            font-family: var(--font-heading);
+        }
+        .menu-item { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .menu-dots { flex: 1; border-bottom: 2px dotted #555; margin: 0 12px 6px 12px; }
+
+        /* Navigation */
+        .nav-bar {
+            background: rgba(62, 39, 35, 0.95);
+            color: var(--wc-latte);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .nav-logo { font-family: var(--font-display); font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 24px; font-family: var(--font-body); font-weight: 600; }
+
+        /* Sections Labels within Canvas */
+        .section-marker {
+            position: absolute;
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 0;
+            font-family: var(--font-ui);
+            letter-spacing: -0.02em;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- TOOLBAR -->
+    <header class="toolbar">
+        <div class="toolbar-left">
+            <button class="icon-btn"><i class="ph ph-arrow-left"></i></button>
+            <div class="theme-name">
+                Warm Coffee
+                <span class="theme-badge">v2.1</span>
+            </div>
+        </div>
+        
+        <div class="toolbar-center">
+            <button class="icon-btn"><i class="ph ph-cursor-default"></i></button>
+            <button class="icon-btn"><i class="ph ph-hand-palm"></i></button>
+        </div>
+
+        <div class="toolbar-right">
+            <div class="zoom-controls">
+                <button class="icon-btn" onclick="zoomOut()"><i class="ph ph-minus"></i></button>
+                <span class="zoom-val" id="zoomDisplay">100%</span>
+                <button class="icon-btn" onclick="zoomIn()"><i class="ph ph-plus"></i></button>
+            </div>
+            <button class="icon-btn"><i class="ph ph-share"></i></button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-title">Foundation</div>
+            <div class="sidebar-item" onclick="panToFrame('colors')"><i class="ph ph-palette"></i> Colors</div>
+            <div class="sidebar-item" onclick="panToFrame('typography')"><i class="ph ph-text-aa"></i> Typography</div>
+            <div class="sidebar-item" onclick="panToFrame('elevation')"><i class="ph ph-layers"></i> Elevation</div>
+        </div>
+        
+        <div class="sidebar-section">
+            <div class="sidebar-title">Components</div>
+            <div class="sidebar-item" onclick="panToFrame('buttons')"><i class="ph ph-toggle-left"></i> Buttons</div>
+            <div class="sidebar-item" onclick="panToFrame('cards')"><i class="ph ph-cards"></i> Product Card</div>
+            <div class="sidebar-item" onclick="panToFrame('nav')"><i class="ph ph-navigation-arrow"></i> Navigation</div>
+            <div class="sidebar-item" onclick="panToFrame('menu')"><i class="ph ph-list-dashes"></i> Menu List</div>
+            <div class="sidebar-item" onclick="panToFrame('footer')"><i class="ph ph-layout"></i> Footer</div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Pages</div>
+            <div class="sidebar-item" onclick="panToFrame('home')"><i class="ph ph-house"></i> Home Page</div>
+            <div class="sidebar-item" onclick="panToFrame('about')"><i class="ph ph-info"></i> Our Story</div>
+            <div class="sidebar-item" onclick="panToFrame('events')"><i class="ph ph-calendar"></i> Events</div>
+        </div>
+    </aside>
+
+    <!-- CANVAS -->
+    <main class="canvas-viewport" id="viewport">
+        <div class="canvas-content" id="canvas">
+            
+            <!-- SECTION MARKERS -->
+            <div class="section-marker" style="top: 100px; left: 100px;">Tokens</div>
+            <div class="section-marker" style="top: 100px; left: 1400px;">Components</div>
+            <div class="section-marker" style="top: 1000px; left: 100px;">Pages</div>
+
+            <!-- TOKENS GROUP -->
+            
+            <!-- 1. COLORS -->
+            <div class="frame-label" style="top: 276px; left: 100px;">Color Palette</div>
+            <div class="frame" id="colors" style="top: 300px; left: 100px; width: 600px; height: 400px;">
+                <div class="frame-inner">
+                    <div class="swatch-grid">
+                        <div class="swatch">
+                            <div class="swatch-color" style="background: var(--wc-espresso);"></div>
+                            <div class="swatch-info"><span class="swatch-name">Espresso</span><span class="swatch-hex">#3E2723</span></div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch-color" style="background: var(--wc-bean);"></div>
+                            <div class="swatch-info"><span class="swatch-name">Bean</span><span class="swatch-hex">#5D4037</span></div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch-color" style="background: var(--wc-latte);"></div>
+                            <div class="swatch-info"><span class="swatch-name">Latte</span><span class="swatch-hex">#F5E6CA</span></div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch-color" style="background: var(--wc-crema);"></div>
+                            <div class="swatch-info"><span class="swatch-name">Crema</span><span class="swatch-hex">#D7CCC8</span></div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch-color" style="background: var(--wc-accent);"></div>
+                            <div class="swatch-info"><span class="swatch-name">Accent</span><span class="swatch-hex">#FF7043</span></div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch-color" style="background: var(--wc-chalkboard);"></div>
+                            <div class="swatch-info"><span class="swatch-name">Chalkboard</span><span class="swatch-hex">#222222</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. TYPOGRAPHY -->
+            <div class="frame-label" style="top: 276px; left: 740px;">Typography Scale</div>
+            <div class="frame" id="typography" style="top: 300px; left: 740px; width: 500px; height: 400px;">
+                <div class="frame-inner">
+                    <div class="type-scale">
+                        <div class="type-row">
+                            <div class="type-meta">Display<br>Pacifico 4rem</div>
+                            <div class="type-preview display-text" style="font-size: 3rem; color: var(--wc-espresso);">Warm Coffee</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-meta">Heading<br>Lora 2rem</div>
+                            <div class="type-preview" style="font-family: var(--font-heading); font-size: 2rem; color: var(--wc-bean);">The Perfect Brew</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-meta">Body<br>Nunito 1rem</div>
+                            <div class="type-preview" style="font-size: 1rem; line-height: 1.5;">Savor the rich aroma of freshly ground beans in every cup. A moment of tranquility.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPONENTS GROUP -->
+
+            <!-- 3. BUTTONS -->
+            <div class="frame-label" style="top: 276px; left: 1400px;">Button Variants</div>
+            <div class="frame" id="buttons" style="top: 300px; left: 1400px; width: 400px; height: 250px;">
+                <div class="frame-inner component-stage">
+                    <div style="display:flex; gap: 16px;">
+                        <button class="btn btn-primary">Order Now</button>
+                        <button class="btn btn-outline">Learn More</button>
+                    </div>
+                    <button class="btn btn-accent" style="width: 100%;">Subscribe & Save</button>
+                </div>
+            </div>
+
+            <!-- 4. CARDS -->
+            <div class="frame-label" style="top: 576px; left: 1400px;">Product Card</div>
+            <div class="frame" id="cards" style="top: 600px; left: 1400px; width: 400px; height: 500px;">
+                <div class="frame-inner component-stage" style="background: var(--wc-latte);">
+                    <div class="card">
+                        <div class="card-img"></div>
+                        <div class="card-body">
+                            <span class="card-tag">Dark Roast</span>
+                            <div class="card-title">Midnight Blend</div>
+                            <p style="color: #666; font-size: 0.9rem; margin-top: 8px;">Notes of dark chocolate and smoke.</p>
+                            <div style="margin-top: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                <span class="card-price">$18.00</span>
+                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. NAVIGATION -->
+            <div class="frame-label" style="top: 276px; left: 1840px;">Navigation Bar</div>
+            <div class="frame" id="nav" style="top: 300px; left: 1840px; width: 800px; height: 120px;">
+                <div class="frame-inner" style="background: #eee; justify-content: center; padding: 0;">
+                    <nav class="nav-bar">
+                        <div class="nav-logo">Warm Coffee</div>
+                        <div class="nav-links">
+                            <span>Menu</span>
+                            <span>Locations</span>
+                            <span>Shop</span>
+                            <span>About</span>
+                        </div>
+                        <button class="btn btn-accent" style="padding: 8px 20px;">Sign In</button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- 6. CHALKBOARD -->
+            <div class="frame-label" style="top: 456px; left: 1840px;">Chalkboard Menu</div>
+            <div class="frame" id="menu" style="top: 480px; left: 1840px; width: 400px; height: 400px;">
+                <div class="frame-inner">
+                    <div class="menu-board">
+                        <h2 style="text-align: center; border-bottom: 1px solid #555; padding-bottom: 16px; margin-bottom: 24px;">Espresso Bar</h2>
+                        <div class="menu-item">
+                            <span>Americano</span><div class="menu-dots"></div><span>3.50</span>
+                        </div>
+                        <div class="menu-item">
+                            <span>Cappuccino</span><div class="menu-dots"></div><span>4.25</span>
+                        </div>
+                        <div class="menu-item">
+                            <span>Flat White</span><div class="menu-dots"></div><span>4.25</span>
+                        </div>
+                        <div class="menu-item">
+                            <span>Mocha</span><div class="menu-dots"></div><span>4.75</span>
+                        </div>
+                        <div class="menu-item">
+                            <span>Macchiato</span><div class="menu-dots"></div><span>3.75</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. FOOTER -->
+            <div class="frame-label" style="top: 900px; left: 1840px;">Footer</div>
+            <div class="frame" id="footer" style="top: 924px; left: 1840px; width: 800px; height: 300px;">
+                <div class="frame-inner" style="background: var(--wc-espresso); color: var(--wc-latte); padding: 40px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;">
+                        <div>
+                            <div style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 16px;">Warm Coffee</div>
+                            <p style="font-size: 0.9rem; opacity: 0.8;">Brewing moments of joy since 1995.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--wc-accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Explore</h4>
+                            <ul style="list-style: none; padding: 0; font-size: 0.9rem; line-height: 2;">
+                                <li>Our Story</li>
+                                <li>Menu</li>
+                                <li>Locations</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--wc-accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Connect</h4>
+                            <div style="display: flex; gap: 16px; font-size: 1.5rem; margin-top: 16px;">
+                                <i class="ph ph-instagram-logo"></i>
+                                <i class="ph ph-twitter-logo"></i>
+                                <i class="ph ph-facebook-logo"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center; font-size: 0.8rem; opacity: 0.6;">
+                        &copy; 2024 Warm Coffee Co. All rights reserved.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGES GROUP -->
+
+            <!-- 7. HOME PAGE MOCK -->
+            <div class="frame-label" style="top: 976px; left: 100px;">Page: Landing</div>
+            <div class="frame" id="home" style="top: 1000px; left: 100px; width: 600px; height: 450px;">
+                <div class="frame-inner" style="background: var(--wc-latte);">
+                    <nav class="nav-bar" style="transform: scale(0.8); transform-origin: top center; width: 125%;">
+                        <div class="nav-logo">Warm Coffee</div>
+                        <div class="nav-links"><span>Menu</span><span>Shop</span></div>
+                    </nav>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 40px;">
+                        <h1 class="display-text" style="font-size: 3rem; color: var(--wc-espresso);">Cozy Moments</h1>
+                        <p style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--wc-bean); max-width: 400px;">
+                            Experience the warmth of artisanal coffee in the heart of the city.
+                        </p>
+                        <button class="btn btn-primary" style="margin-top: 24px;">Find a Cafe</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. ABOUT MOCK -->
+            <div class="frame-label" style="top: 976px; left: 740px;">Page: About Us</div>
+            <div class="frame" id="about" style="top: 1000px; left: 740px; width: 600px; height: 800px;">
+                <div class="frame-inner" style="background: #fff;">
+                     <div style="height: 300px; background: var(--wc-bean); display: flex; align-items: center; justify-content: center; color: white;">
+                        <h1 style="font-family: var(--font-heading); font-size: 2.5rem;">Our Story</h1>
+                     </div>
+                     <div style="padding: 40px; font-family: var(--font-body); color: var(--wc-espresso); line-height: 1.6;">
+                        <h2 style="font-family: var(--font-display);">Since 1995</h2>
+                        <p>It started with a single bean and a dream. We believe in ethical sourcing and slow roasting.</p>
+                        <p>Our cafes are designed to be a second home. A place to think, to read, to connect.</p>
+                        <div style="display: flex; gap: 16px; margin-top: 32px;">
+                            <div style="width: 100px; height: 100px; background: var(--wc-latte); border-radius: 8px;"></div>
+                            <div style="width: 100px; height: 100px; background: var(--wc-crema); border-radius: 8px;"></div>
+                            <div style="width: 100px; height: 100px; background: var(--wc-espresso); border-radius: 8px;"></div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- 9. EVENTS MOCK -->
+            <div class="frame-label" style="top: 976px; left: 1400px;">Page: Events</div>
+            <div class="frame" id="events" style="top: 1000px; left: 1400px; width: 400px; height: 600px;">
+                <div class="frame-inner" style="background: var(--wc-chalkboard);">
+                    <div style="padding: 32px; text-align: center;">
+                        <h2 style="color: var(--wc-latte);">Upcoming Events</h2>
+                        <div style="background: var(--wc-bean); padding: 20px; border-radius: 8px; margin-top: 24px; text-align: left;">
+                            <div style="color: var(--wc-accent); font-weight: 700; font-size: 0.8rem;">FEB 14</div>
+                            <h3 style="color: white; font-size: 1.2rem; margin: 8px 0;">Latte Art Workshop</h3>
+                            <p style="color: #ccc; font-size: 0.9rem;">Learn the basics of pouring the perfect heart.</p>
+                            <button class="btn btn-outline" style="margin-top: 16px; width: 100%; border-color: rgba(255,255,255,0.2); color: white;">Register $25</button>
+                        </div>
+                        
+                         <div style="background: var(--wc-bean); padding: 20px; border-radius: 8px; margin-top: 16px; text-align: left;">
+                            <div style="color: var(--wc-accent); font-weight: 700; font-size: 0.8rem;">FEB 20</div>
+                            <h3 style="color: white; font-size: 1.2rem; margin: 8px 0;">Live Jazz Night</h3>
+                            <p style="color: #ccc; font-size: 0.9rem;">Smooth jazz and smooth brews.</p>
+                            <button class="btn btn-outline" style="margin-top: 16px; width: 100%; border-color: rgba(255,255,255,0.2); color: white;">Free Entry</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End Canvas Content -->
+    </main>
+
+    <!-- MINIMAP -->
+    <div class="minimap">
+        <div class="minimap-content" id="minimapContent">
+            <!-- Simplified rectangles for minimap, injected by JS -->
+            <div id="minimapIndicator" class="minimap-viewport-indicator"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // State
+    const state = {
+        scale: 1,
+        panning: false,
+        pointX: 0,
+        pointY: 0,
+        startX: 0,
+        startY: 0,
+        width: 0, 
+        height: 0 // canvas bounds
+    };
+
+    const viewport = document.getElementById('viewport');
+    const canvas = document.getElementById('canvas');
+    const zoomDisplay = document.getElementById('zoomDisplay');
+    const minimapContent = document.getElementById('minimapContent');
+    const minimapIndicator = document.getElementById('minimapIndicator');
+
+    // Init Logic
+    function init() {
+        state.width = 3000; // rough active area
+        state.height = 2000;
+        
+        // Center initial view
+        state.pointX = -50;
+        state.pointY = -50;
+        
+        updateTransform();
+        generateMinimap();
+        
+        // Listeners
+        viewport.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+        viewport.addEventListener('wheel', onWheel, { passive: false });
+    }
+
+    // Pan & Zoom Logic
+    function updateTransform() {
+        canvas.style.transform = `translate(${state.pointX}px, ${state.pointY}px) scale(${state.scale})`;
+        zoomDisplay.innerText = Math.round(state.scale * 100) + '%';
+        updateMinimapIndicator();
+    }
+
+    function onMouseDown(e) {
+        if(e.button !== 0 && e.button !== 1) return; // Only left or middle click
+        state.panning = true;
+        state.startX = e.clientX - state.pointX;
+        state.startY = e.clientY - state.pointY;
+        viewport.style.cursor = 'grabbing';
+    }
+
+    function onMouseUp(e) {
+        state.panning = false;
+        viewport.style.cursor = 'grab';
+    }
+
+    function onMouseMove(e) {
+        if (!state.panning) return;
+        e.preventDefault();
+        state.pointX = e.clientX - state.startX;
+        state.pointY = e.clientY - state.startY;
+        updateTransform();
+    }
+
+    function onWheel(e) {
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            const xs = (e.clientX - viewport.getBoundingClientRect().left - state.pointX) / state.scale;
+            const ys = (e.clientY - viewport.getBoundingClientRect().top - state.pointY) / state.scale;
+            
+            const delta = -e.deltaY;
+            (delta > 0) ? (state.scale *= 1.1) : (state.scale /= 1.1);
+            
+            // Clamp zoom
+            state.scale = Math.min(Math.max(0.1, state.scale), 4);
+            
+            state.pointX = e.clientX - viewport.getBoundingClientRect().left - xs * state.scale;
+            state.pointY = e.clientY - viewport.getBoundingClientRect().top - ys * state.scale;
+
+            updateTransform();
+        } else {
+            // Regular scroll pans
+            state.pointX -= e.deltaX;
+            state.pointY -= e.deltaY;
+            updateTransform();
+        }
+    }
+
+    function zoomIn() {
+        state.scale *= 1.2;
+        updateTransform();
+    }
+
+    function zoomOut() {
+        state.scale /= 1.2;
+        updateTransform();
+    }
+
+    function panToFrame(id) {
+        const el = document.getElementById(id);
+        if(!el) return;
+        
+        // Center element
+        const rect = el.getBoundingClientRect(); // relative to viewport currently? No, need offset
+        // Actually simpler: read style top/left since we set them inline
+        const x = parseInt(el.style.left);
+        const y = parseInt(el.style.top);
+        const w = parseInt(el.style.width);
+        const h = parseInt(el.style.height);
+
+        // Target scale (fit slightly or default 1)
+        const targetScale = 1; 
+        
+        // Viewport center
+        const vw = viewport.clientWidth;
+        const vh = viewport.clientHeight;
+
+        state.scale = targetScale;
+        state.pointX = (vw / 2) - (x + w/2) * state.scale;
+        state.pointY = (vh / 2) - (y + h/2) * state.scale;
+        
+        updateTransform();
+        
+        // Highlight in sidebar
+        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+        // (Optional: find the sidebar item that clicked this and add active)
+    }
+
+    // Minimap Logic
+    function generateMinimap() {
+        // Find all frames and replicate them as small rectangles
+        const frames = document.querySelectorAll('.frame');
+        const scale = 200 / 3000; // map width / approx canvas width
+        
+        frames.forEach(frame => {
+            const rect = document.createElement('div');
+            rect.style.position = 'absolute';
+            rect.style.left = (parseInt(frame.style.left) * scale) + 'px';
+            rect.style.top = (parseInt(frame.style.top) * scale) + 'px';
+            rect.style.width = (parseInt(frame.style.width) * scale) + 'px';
+            rect.style.height = (parseInt(frame.style.height) * scale) + 'px';
+            rect.style.background = '#333';
+            rect.style.borderRadius = '2px';
+            minimapContent.appendChild(rect);
+        });
+    }
+
+    function updateMinimapIndicator() {
+        // Map dimensions
+        const mapW = 200;
+        const mapH = 120;
+        const canvasW = 3000; // assumption for minimap scale
+        const ratio = mapW / canvasW;
+
+        // Viewport rect in canvas space
+        // x = (0 - pointX) / scale
+        const vX = -state.pointX / state.scale;
+        const vY = -state.pointY / state.scale;
+        const vW = viewport.clientWidth / state.scale;
+        const vH = viewport.clientHeight / state.scale;
+
+        minimapIndicator.style.left = (vX * ratio) + 'px';
+        minimapIndicator.style.top = (vY * ratio) + 'px';
+        minimapIndicator.style.width = (vW * ratio) + 'px';
+        minimapIndicator.style.height = (vH * ratio) + 'px';
+    }
+
+    // Run
+    init();
+
+</script>
+</body>
+</html>

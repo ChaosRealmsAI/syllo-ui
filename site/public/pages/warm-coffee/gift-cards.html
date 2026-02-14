@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gift Cards | Warm Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --espresso: #3E2723;
+      --latte: #F5E6CA;
+      --crema: #D7CCC8;
+      --bean: #5D4037;
+      --accent: #FF7043;
+      --white: #FFFFFF;
+      --chalkboard-bg: #222;
+      --chalkboard-text: #eee;
+      --chalkboard-muted: #999;
+      --chalkboard-border: #444;
+      --font-head: 'Pacifico', cursive;
+      --font-serif: 'Lora', serif;
+      --font-sans: 'Nunito', sans-serif;
+      --container-max: 1100px;
+      --container-narrow: 800px;
+      --container-padding: 0 20px;
+      --section-padding: 100px 0;
+      --section-header-mb: 60px;
+      --grid-gap-lg: 40px;
+      --grid-gap-md: 30px;
+      --grid-gap-sm: 20px;
+      --card-padding: 30px;
+      --footer-padding: 80px 0 40px;
+      --nav-padding: 30px;
+      --radius: 12px;
+      --radius-pill: 30px;
+      --radius-chalkboard: 10px;
+      --shadow: 5px 5px 20px color-mix(in srgb, var(--espresso) 14%, transparent);
+      --shadow-hover: 0 10px 30px color-mix(in srgb, var(--espresso) 24%, transparent);
+      --shadow-chalkboard: 0 10px 30px color-mix(in srgb, var(--bean) 32%, transparent);
+      --hero-title-size: 5rem;
+      --hero-subtitle-size: 1.5rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--latte);
+      color: var(--bean);
+      line-height: 1.6;
+      transition: 0.3s;
+    }
+
+    a { text-decoration: none; transition: 0.3s; }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+    }
+
+    .site-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: var(--nav-padding);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .site-nav .logo {
+      font-family: var(--font-head);
+      font-size: 32px;
+      color: var(--white);
+      text-shadow: 0 2px 5px color-mix(in srgb, var(--espresso) 35%, transparent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      font-size: 14px;
+      text-shadow: 0 1px 3px color-mix(in srgb, var(--espresso) 45%, transparent);
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--espresso) 40%, transparent), color-mix(in srgb, var(--espresso) 80%, transparent)),
+        url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=2000&auto=format&fit=crop') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .hero-content {
+      max-width: 760px;
+      padding: var(--container-padding);
+      animation: fadeUp 1.5s ease-out;
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      font-family: var(--font-head);
+      font-size: var(--hero-title-size);
+      color: var(--latte);
+      text-shadow: 0 4px 10px color-mix(in srgb, var(--espresso) 45%, transparent);
+    }
+
+    .hero p {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: var(--hero-subtitle-size);
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    .section {
+      padding: var(--section-padding);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--section-header-mb);
+    }
+
+    .section-header h2 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      color: var(--espresso);
+      font-weight: 700;
+    }
+
+    .section-header p {
+      margin: 0 auto;
+      max-width: 600px;
+      color: var(--bean);
+      font-size: 1.1rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap-lg);
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card img {
+      height: 250px;
+      width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: var(--card-padding);
+      text-align: center;
+    }
+
+    .card-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .card-subtitle {
+      display: block;
+      margin: 8px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-family: var(--font-sans);
+    }
+
+    .card-body p {
+      margin: 0 0 16px;
+      color: var(--bean);
+      font-size: 0.95rem;
+    }
+
+    .card-price {
+      color: var(--accent);
+      font-family: var(--font-sans);
+      font-size: 2.4rem;
+      margin: 0 0 18px;
+      font-weight: 700;
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      background: var(--espresso);
+      color: var(--latte);
+      padding: 15px 40px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      box-shadow: 0 5px 15px color-mix(in srgb, var(--espresso) 35%, transparent);
+      border: 2px solid transparent;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+    }
+
+    .chalkboard {
+      margin-top: var(--section-padding);
+      background: var(--chalkboard-bg);
+      border: 15px solid var(--bean);
+      border-radius: var(--radius-chalkboard);
+      padding: 40px;
+      color: var(--chalkboard-text);
+      box-shadow: var(--shadow-chalkboard);
+      font-family: var(--font-sans);
+    }
+
+    .chalkboard h3 {
+      margin: 0 0 16px;
+      text-align: center;
+      font-family: var(--font-head);
+      font-size: 3rem;
+      text-shadow: 2px 2px 0 color-mix(in srgb, var(--bean) 45%, transparent);
+      color: var(--chalkboard-text);
+    }
+
+    .chalkboard p {
+      margin: 0 0 18px;
+      color: var(--chalkboard-text);
+      opacity: 0.9;
+      font-size: 1.02rem;
+    }
+
+    .chalkboard-form label {
+      display: block;
+      margin: 14px 0 8px;
+      color: var(--chalkboard-text);
+      font-size: 0.95rem;
+    }
+
+    .chalkboard-form input,
+    .chalkboard-form textarea {
+      width: 100%;
+      background: color-mix(in srgb, var(--chalkboard-bg) 74%, transparent);
+      border: 1px solid var(--chalkboard-border);
+      border-radius: var(--radius);
+      color: var(--chalkboard-text);
+      padding: 14px;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .chalkboard-form textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .chalkboard-footer {
+      border-top: 1px dashed var(--chalkboard-muted);
+      margin-top: 18px;
+      padding-top: 18px;
+      text-align: center;
+      color: var(--chalkboard-muted);
+      font-size: 0.95rem;
+      font-style: italic;
+    }
+
+    .footer {
+      background: var(--espresso);
+      color: var(--latte);
+      padding: var(--footer-padding);
+    }
+
+    .footer-grid {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--container-padding);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .footer-col p {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .footer-copy {
+      border-top: 1px dashed var(--crema);
+      text-align: center;
+      opacity: 0.6;
+      padding-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+
+    @media (max-width: 900px) {
+      .site-nav { flex-direction: column; align-items: flex-start; }
+      .hero { min-height: 72vh; }
+      .hero h1 { font-size: 3.5rem; }
+      .cards-grid,
+      .footer-grid { grid-template-columns: 1fr; }
+      .chalkboard { padding: 30px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="site-nav">
+      <a class="logo" href="gift-cards.html">Warm Coffee</a>
+      <div class="nav-links">
+        <a href="events.html">Events</a>
+        <a href="gift-cards.html">Gift Cards</a>
+        <a href="subscription.html">Subscription</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog-post.html">Blog</a>
+      </div>
+    </nav>
+    <div class="hero-content container">
+      <h1>Give the Gift of Warmth</h1>
+      <p>Choose a warm coffee gift card for someone special and pour your care into every sip.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Gift Card Selection</h2>
+          <p>Three value options are available. Each card works with a custom message and scheduled delivery date.</p>
+        </div>
+        <div class="cards-grid">
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1459755486867-b55449bb39ff?w=1000&auto=format&fit=crop" alt="$25 gift card" />
+            <div class="card-body">
+              <span class="card-title">Starter Sip Card</span>
+              <span class="card-subtitle">Perfect Starter</span>
+              <p>Great for inviting a friend on their first visit, with a refined design and one Americano of choice.</p>
+              <p class="card-price">$25</p>
+              <a class="btn-pill" href="#"><i class="ph ph-heart"></i> Buy Now</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1504630083234-141fe2f3d0f0?w=1000&auto=format&fit=crop" alt="$50 gift card" />
+            <div class="card-body">
+              <span class="card-title">Companion Card</span>
+              <span class="card-subtitle">Most Popular</span>
+              <p>Redeem for two cups and one dessert. Perfect for weekend dates or sharing with your partner.</p>
+              <p class="card-price">$50</p>
+              <a class="btn-pill" href="#"><i class="ph ph-coffee"></i> Buy Now</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1000&auto=format&fit=crop" alt="$100 gift card" />
+            <div class="card-body">
+              <span class="card-title">Warmth Quarterly Card</span>
+              <span class="card-subtitle">Best Value</span>
+              <p>Includes one private class voucher. Ideal for regular guests and someone you share your coffee routine with.</p>
+              <p class="card-price">$100</p>
+              <a class="btn-pill" href="#"><i class="ph ph-flask"></i> Buy Now</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="chalkboard">
+          <h3>Leave Your Message</h3>
+          <p>Enter your blessing or note and we&apos;ll print it inside the warm wood packaging so the recipient feels your warmth when they open it.</p>
+          <form class="chalkboard-form">
+            <label for="gift-to">Recipient</label>
+            <input id="gift-to" type="text" placeholder="Recipient name" />
+            <label for="gift-note">Message</label>
+            <textarea id="gift-note" placeholder="For example: may every morning be held by this coffee..."></textarea>
+          </form>
+          <div class="chalkboard-footer">The mock input and chalkboard texture are purely styled by the chalkboard components.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Store Hours</h3>
+        <p>Mon - Fri 08:00 - 22:00</p>
+        <p>Weekend 09:00 - 23:00</p>
+      </div>
+      <div class="footer-col">
+        <h3>Subscription Perks</h3>
+        <p>Buy a gift card and subscribe for a first-cup discount</p>
+        <p>Gift recipients can attach the e-voucher directly to their email</p>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p>hello@warmcoffee.com</p>
+        <p>+86 021-0000-0000</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Warm Coffee. All rights reserved.</div>
+  </footer>
+</body>
+</html>
